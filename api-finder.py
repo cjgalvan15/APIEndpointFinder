@@ -1,6 +1,9 @@
 import requests
 import re
 from bs4 import BeautifulSoup
+import sys
+import time
+from tqdm import tqdm
 
 # regular expression that matches ".js" extension within string
 pattern1 = r".*js$"
@@ -9,12 +12,54 @@ pattern1 = r".*js$"
 pattern3 = r"[a-zA-Z0-9\/\.:-]+/api/[a-zA-Z0-9\/\.]+"
 pattern4 = r"[a-zA-Z0-9\/\.:-]+/v1[a-zA-Z0-9\/\.]+"
 
+# colors
+GREEN = '\033[92m'
+RED = '\033[91m'
+ORANGE = '\033[38;5;208m'
+RESET = '\033[0m'
 
 # js links
 jsLinks = []
 
 # API endpoitns
 apiEndpoints = []
+
+
+
+# Define the number of iterations for the loading animation
+total_iterations = 15
+
+# Initialize the progress bar
+progress_bar = tqdm(total=total_iterations, desc="Loading", unit="iteration")
+
+for _ in range(total_iterations):
+    # Perform some work here
+    time.sleep(0.1)  # Simulate work by sleeping for 0.1 seconds
+    # Update the progress bar
+    progress_bar.update(1)
+
+# Close the progress bar
+progress_bar.close()
+
+def displayFinder():
+    print(r"""
+          _____  ______
+   /\\    ||   |   ||
+  /  \\   ||___|   ||
+ /____\\  ||       ||
+/      \\ ||     __||__
+
+____ ____ .       ___   ___  ____.
+||    ||  ||\   ||| _\ ||   ||   |
+||__  ||  || \  ||| | |||-- ||___/
+||    ||  ||  \ |||_| |||--||| \\
+||   _||_ ||   \|||__/ ||__ ||  \\
+
+Created by: Carl John M. Galvan
+Date Started: November 5, 2023
+Issued to: Secuna Software Technologies, Inc.
+                             
+    """)
 
 def find_links(url):
     try:
@@ -55,18 +100,17 @@ def find_links(url):
         print(f"An error occurred: {e}")
         
 def displayJS(links):
-    print("=====================================>")
-    print("(JS Files)\n")
+    print(GREEN+"=====================================>"+RESET)
+    print(ORANGE+"(JS Files)\n"+RESET)
     for url in links:
         print(url)
-    print("=====================================>")
+    print(GREEN+"=====================================>"+RESET)
     
 def displayEndpoints(links):
-    print("=====================================>")
-    print("(API Endpoints)\n")
+    print(GREEN+"=====================================>"+RESET)
+    print(RED+"(API Endpoints)\n"+RESET)
     for url in links:
         print(url)
-    print("=====================================>")
 
 def findApiEndpoints(links):
     try:
@@ -93,7 +137,9 @@ def findApiEndpoints(links):
         print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
+    displayFinder()
     url = input("Enter the URL to scrape: ")
     find_links(url)
     findApiEndpoints(jsLinks)
+    print(GREEN+"=======================TASK COMPLETED"+RESET)
 
